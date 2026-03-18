@@ -69,6 +69,30 @@ app.post("/mcp", async (req, res) => {
   await transport.handleRequest(req, res, req.body);
 });
 
+// GET handler for SSE connections (required by MCP Streamable HTTP spec)
+app.get("/mcp", async (req, res) => {
+  res.writeHead(405, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({
+    jsonrpc: "2.0",
+    error: { code: -32000, message: "SSE not supported - use POST for Streamable HTTP" },
+    id: null
+  }));
+});
+
+// DELETE handler for session cleanup
+app.delete("/mcp", async (req, res) => {
+  res.status(200).json({ ok: true });
+});
+
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "ok", service: "whoop-mcp-server" });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", service: "whoop-mcp-server" });
+});
+
 const port = parseInt(process.env.PORT || "3000");
 app
   .listen(port, () => {
