@@ -21,10 +21,10 @@ export function registerStrainTools(
           ),
       },
       outputSchema: {
-        title: z.string(),
+        title: z.string().nullable(),
         strainScore: z.object({
-          score: z.string(),
-          percentage: z.number(),
+          score: z.string().nullable(),
+          percentage: z.number().nullable(),
           target: z.number().nullable(),
           lowerOptimal: z.number().nullable(),
           higherOptimal: z.number().nullable(),
@@ -33,20 +33,20 @@ export function registerStrainTools(
           z.object({
             id: z.string(),
             title: z.string(),
-            value: z.string(),
-            baseline: z.string(),
-            status: z.string(),
-            icon: z.string(),
+            value: z.string().nullable(),
+            baseline: z.string().nullable(),
+            status: z.string().nullable(),
+            icon: z.string().nullable(),
           })
         ),
         activities: z.array(
           z.object({
             title: z.string(),
-            strainScore: z.string(),
-            startTime: z.string(),
-            endTime: z.string(),
-            type: z.string(),
-            status: z.string(),
+            strainScore: z.string().nullable(),
+            startTime: z.string().nullable(),
+            endTime: z.string().nullable(),
+            type: z.string().nullable(),
+            status: z.string().nullable(),
           })
         ),
         coachInsight: z.string().nullable(),
