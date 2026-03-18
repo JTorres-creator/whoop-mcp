@@ -21,20 +21,20 @@ export function registerRecoveryTools(
           ),
       },
       outputSchema: {
-        title: z.string(),
+        title: z.string().nullable(),
         recoveryScore: z.object({
-          score: z.string(),
-          percentage: z.number(),
-          style: z.string(),
+          score: z.string().nullable(),
+          percentage: z.number().nullable(),
+          style: z.string().nullable(),
         }),
         contributors: z.array(
           z.object({
             id: z.string(),
             title: z.string(),
-            value: z.string(),
-            baseline: z.string(),
-            status: z.string(),
-            icon: z.string(),
+            value: z.string().nullable(),
+            baseline: z.string().nullable(),
+            status: z.string().nullable(),
+            icon: z.string().nullable(),
           })
         ),
         coachInsight: z.string().nullable(),
