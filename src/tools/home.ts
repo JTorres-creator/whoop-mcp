@@ -25,10 +25,10 @@ export function registerHomeTools(server: McpServer, whoopClient: WhoopClient) {
           sleepState: z.string(),
         }),
         liveMetrics: z.object({
-          recoveryScore: z.number(),
-          dayStrain: z.number(),
-          sleepHours: z.number(),
-          calories: z.number(),
+          recoveryScore: z.number().nullable(),
+          dayStrain: z.number().nullable(),
+          sleepHours: z.number().nullable(),
+          calories: z.number().nullable(),
         }),
         gauges: z.array(
           z.object({
@@ -47,19 +47,19 @@ export function registerHomeTools(server: McpServer, whoopClient: WhoopClient) {
         activities: z.array(
           z.object({
             title: z.string(),
-            type: z.string(),
-            scoreDisplay: z.string(),
-            startTime: z.string(),
-            endTime: z.string(),
-            status: z.string(),
+            type: z.string().nullable(),
+            scoreDisplay: z.string().nullable(),
+            startTime: z.string().nullable(),
+            endTime: z.string().nullable(),
+            status: z.string().nullable(),
           })
         ),
         statistics: z.array(
           z.object({
             title: z.string(),
-            currentValue: z.string(),
-            thirtyDayAverage: z.string(),
-            state: z.string(),
+            currentValue: z.string().nullable(),
+            thirtyDayAverage: z.string().nullable(),
+            state: z.string().nullable(),
           })
         ),
       },
@@ -149,10 +149,10 @@ export function registerHomeTools(server: McpServer, whoopClient: WhoopClient) {
           "",
           "📊 LIVE METRICS",
           "───────────────",
-          `  Recovery: ${output.liveMetrics.recoveryScore}%`,
-          `  Strain: ${output.liveMetrics.dayStrain.toFixed(1)}`,
-          `  Sleep: ${output.liveMetrics.sleepHours.toFixed(1)} hours`,
-          `  Calories: ${output.liveMetrics.calories}`,
+          `  Recovery: ${output.liveMetrics.recoveryScore ?? 'N/A'}%`,
+          `  Strain: ${output.liveMetrics.dayStrain?.toFixed(1) ?? 'N/A'}`,
+          `  Sleep: ${output.liveMetrics.sleepHours?.toFixed(1) ?? 'N/A'} hours`,
+          `  Calories: ${output.liveMetrics.calories ?? 'N/A'}`,
           ""
         );
 
@@ -181,15 +181,15 @@ export function registerHomeTools(server: McpServer, whoopClient: WhoopClient) {
         if (statistics.length > 0) {
           lines.push("📈 KEY STATISTICS", "─────────────────");
           statistics.forEach((stat) => {
-            const stateEmoji = stat.state.includes("POSITIVE")
+            const stateEmoji = (stat.state || '').includes("POSITIVE")
               ? "✅"
-              : stat.state.includes("NEGATIVE")
+              : (stat.state || '').includes("NEGATIVE")
                 ? "⚠️"
                 : "➡️";
             lines.push(
               `  ${stateEmoji} ${stat.title}`,
-              `     Current: ${stat.currentValue}`,
-              `     30-day avg: ${stat.thirtyDayAverage}`,
+              `     Current: ${stat.currentValue ?? 'N/A'}`,
+              `     30-day avg: ${stat.thirtyDayAverage ?? 'N/A'}`,
               ""
             );
           });
